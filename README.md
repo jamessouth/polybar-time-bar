@@ -23,27 +23,51 @@ A time module for your
 <p>&nbsp;</p>
 
 ## Description
-This repo is a customizable script that provides a progress bar for the day or other time period. It calculates what percentage of the day has passed and applies that to the area you reserve for it, thereby showing the day's progress. It uses the [Unicode code points 2588-F](https://www.unicode.org/charts/PDF/U2580.pdf) (1/8 block to full block) but you can use anything, including [Powerline characters](https://github.com/ryanoasis/powerline-extra-symbols#glyphs). This [Stack Overflow answer](https://stackoverflow.com/a/68298090) was very helpful in developing this module.
+This repo is a progress bar module that shows how much of the day (or other time period) has passed. It uses the [Unicode code points 2588-F](https://www.unicode.org/charts/PDF/U2580.pdf) (1/8 block to full block) but you can use anything, including [Powerline characters](https://github.com/ryanoasis/powerline-extra-symbols#glyphs). This [Stack Overflow answer](https://stackoverflow.com/a/68298090) was helpful in developing this module.
 
 <p>&nbsp;</p>
 
 
 
 ## Installation
-To install a particular font:
-```bash
-sudo mkdir -pv /usr/share/fonts/BinaryClock && cd /usr/share/fonts/BinaryClock && sudo curl -JOL https://github.com/jamessouth/polybar-binary-clock-fonts/blob/master/BinaryClockLigatureMono.ttf?raw=true && sudo fc-cache -fv && fc-list | awk '/BinaryClock/ {print $2}'
+Just copy and paste the examples below into a file like your other polybar scripts. Make it executable with `chmod +x filename.sh`. 
+
+## Usage
+In your module file:
 ```
-This will create a directory for the Binary Clock font family in `/usr/share/fonts/`, change to it, download the font file, update your font cache, and output the name and style. Replace the filename as needed.
+type = custom/script
+exec = IFS=\\. read -a flds <<<$(awk 'BEGIN{split(strftime("%T"),a,":");len=135;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/timebarscript.sh ${flds[0]} ${flds[1]} ${flds[2]}
+interval = 80
+format = <label>
+;format-foreground = ${colors.red}
+label = %{T1}%output%
+```
+The `exec` command uses `awk` and `read` to calculate the number of whole blocks (█)
+needed and what fraction of the next one to show. The script is then called with these values and the length in characters you use to display this module. Note that you set this (len) in the `awk` command. In this example I am using 135 characters, which at font size 13, covers nearly the whole width of my display and allows for an integer interval (80). The more characters you use, the more often it will update. Since the overhead is so low, I use a second polybar just for this. 
 
+To determine the optimal interval divide 86400 (number of seconds in a day) by the product of 8 and how many characters you use to display the time bar - `86400/(module length in characters*8)`. The following table lists character lengths that work out to succinct interval times. These pairs of figures are reversible; 100 characters will update every 108 seconds and 108 characters every 100 seconds.
 
+|Characters|Interval|Characters|Interval|
+|:-:|:-:|:-:|:-:|
+|10|1080|40|270|
+|12|900|45|240|
+|15|720|48|225|
+|16|675|50|216|
+|18|600|54|200|
+|20|540|60|180|
+|24|450|72|150|
+|25|432|75|144|
+|27|400|80|135|
+|30|360|90|120|
+|36|300|100|108|
 
 <p>&nbsp;</p>
 
-## Usage
-A basic bar with a single color. The color can be set by your polybar config in the normal way (`format-foreground`).
+## Examples
+### Default bar, single color
 
 ```bash
+#!/usr/bin/env bash
 EIGHTH=$((10#$2*8/1000000))
 SPACES=$(($3-$1-1))
 (($EIGHTH)) && printf -v PORTION '\\U258%X' $((16 - $EIGHTH)) || PORTION=" "
@@ -51,74 +75,13 @@ for ((i=0; i<$1; i++)); do WHOLE+=█; done
 printf '%s%b%*s' "$WHOLE" "$PORTION" $SPACES ''
 ```
 <img alt="solid color" src="mono.jpg">
-It is called like this in the module config:
 
-```
-exec = IFS=\\. read -a flds <<<$(awk 'BEGIN{split(strftime("%T"),a,":");f=(a[1]/24+a[2]/1440+a[3]/86400)*135;printf "%.6f", f}'); bash ~/.config/polybar/gtmscript.sh ${flds[0]} ${flds[1]} 135
-```
-Note that the length I am using, 135, appears twice in this command. This will set your `IFS` to period, get the time with `awk`, calculate the portion of the day that has passed, read the number of whole blocks and part of the next block that need to be shown, then call the script with those numbers and the module length. You don't need `tail = true` unless you want to make the module clickable to change the state as described below. To determine the interval for calling the script, use this simple command: `bc -l <<< '86400/(module length in characters*8)'`. This is the number of seconds in a day divided by the product of the number of characters (not pixels) you want to use to display the bar and 8. I use a separate polybar just for this module so it can use the whole width of my display. 135 characters covers almost the whole screen and allows for an interval of 80 seconds. Below I will show how to rotate colors in which case you will want to set a lower interval. This just means the bar will not extend but the colors can still change.
+The color can be set by your polybar config in the normal way (`format-foreground`).
 
-
-|Characters|Interval|
-|:-:|:-:|
-|10|1080|
-|12|900|
-|15|720|
-|16|675|
-|18|600|
-|20|540|
-|24|450|
-|25|432|
-|27|400|
-|30|360|
-|32|337.5|
-|36|300|
-|40|270|
-|45|240|
-|48|225|
-|50|216|
-|54|200|
-|60|180|
-|72|150|
-|75|144|
-|80|135|
-|90|120|
-|96|112.5|
-|100|108|
-|108|100|
-|120|90|
-|125|86.4|
-|135|80|
-|144|75|
-|150|72|
-|160|67.5|
-|180|60|
-|192|56.25|
-|200|54|
-|216|50|
-|225|48|
-|240|45|
-|250|43.2|
-|270|40|
-|288|37.5|
-|300|36|
-|320|33.75|
-|360|30|
-|375|28.8|
-|400|27|
-|432|25|
-|450|24|
-|480|22.5|
-|500|21.6|
-|540|20|
-|576|18.75|
-|600|18|
-|625|17.28|
-|675|16|
-
-
+### Multi-color
 
 ```bash
+#!/usr/bin/env bash
 EIGHTH=$((10#$2*8/1000000))
 SPACES=$(($3-$1-1))
 (($EIGHTH)) && printf -v PORTION '\\U258%X' $((16 - $EIGHTH)) || PORTION=" "
@@ -126,6 +89,17 @@ for ((i=0; i<$1; i++)); do printf -v C '%%{F#a4%04x}' $(($i*49));WHOLE+=${C}█;
 printf '%s%b%*s' "$WHOLE" "$PORTION" $SPACES ''
 ```
 <img alt="time over gradient" src="algo.jpg">
+
+This one adds a polybar [format tag](https://github.com/polybar/polybar/wiki/Formatting#foreground-color-f) before each block. The `printf` command takes the loop variable (`$i`) multiplied by an arbitrary value (`49`) and injects it as a hex value to create a color in the format tag, stored in the variable `C`. `C` is then concatenated to `WHOLE` before the block, setting its color. The format tag works like this:
+| | |
+|:-:|:-:|
+|%%|a literal %|
+|{F#|open brace, F for foreground, # for hex color|
+|a4|arbitrary red value|
+|%04x|printf formatting for 0-padded hex value, width 4|
+|}|close brace|
+
+The width of the hex value must be enough to accomodate whatever number you want to put there to create a color algorithmically. 
 
 
 
