@@ -149,30 +149,75 @@ done
 WHOLE+=%{B-}
 printf '%s%*s' "$WHOLE" $SPACES ''
 ```
+<img alt="powerline" src="pwrln.jpg">
+
 To mimic powerline I made a few changes to this example. The partial block characters don't look very good with powerline symbols, so I removed that code and am not printing the `PORTION` character like in the other example. I also have only 24 colors in the `PWR` array, 1 for each hour of the day. Also note they are just hex colors; they are not yet formatted for polybar because we have to set both foreground and background colors to get the powerline effect. This script is called from the module file with this adjusted command:
 ```
 exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=120;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/timebarscript.sh ${flds[0]} ${flds[2]}
 ```
-Note the length of 120 (multiple of 24) and the omission of `flds[1]` (the partial block) from the arguments list the script is called with. In the script, we group by 5 (120 / 24) so that the powerline symbol (``) will appear every hour. 
+Note the length of 120 (multiple of 24) and the omission of `flds[1]` (the partial block) from the arguments list the script is called with. In the script, we group by 5 (120 / 24) so that for each hour/color, four full blocks and one powerline symbol are printed. By omitting partial blocks and only printing 5 characters per hour, an interval of 720 seconds (12 minutes) can be used.
+<p>&nbsp;</p>
 
-
-
-<img alt="powerline" src="pwrln.jpg">
-
-
-
+### Rotate colors
 ```bash
-LEN=${#RAINB[@]}
-G=$(($(date +%s) % $3))
+#!/usr/bin/env bash
+
+declare -a RAIN2=(
+"%{F#00fff9}"
+"%{F#00fff0}"
+...132 omitted...
+"%{F#00faff}"
+)
+
+LEN=${#RAIN2[@]}
+UNIX=$(($(date +%s) % $3))
 EIGHTH=$((10#$2*8/1000000))
 SPACES=$(($3-$1-1))
 (($EIGHTH)) && printf -v PORTION '\\U258%X' $((16 - $EIGHTH)) || PORTION=" "
-for ((i=0; i<$1; i++)); do WHOLE+=${RAIN2[($i+$G) % $LEN]}█; done
-WHOLE+=${RAIN2[($1+$G) % $LEN]}
+for ((i=0; i<$1; i++)); do WHOLE+=${RAIN2[($i+$UNIX) % $LEN]}█; done
+WHOLE+=${RAIN2[($1+$UNIX) % $LEN]}
 printf '%s%b%*s' "$WHOLE" "$PORTION" $SPACES ''
 ```
-
-
 <img alt="moving colors" src="loop.gif">
 
+To animate the bar we can use a continuous color array where the final color is similar to the first color so that it can be seamlessly looped. We then get the Unix time in seconds, modulo by the length we are using for the bar, and add that to the loop variable, then modulo by the length of the bar again. With a 1 second interval, the colors will rotate through the blocks of the bar.
 <p>&nbsp;</p>
+
+## Creating arrays of colors
+There are a lot of color/gradient/CSS tools available but they aren't geared towards generating lists of 100+ colors, so you would probably have to modify the code in order to use their color interpolation algorithms for this purpose. [This tool](https://medialab.github.io/iwanthue/) is the only one I have found that is ready to use. It generates long lists of hex colors and you can sort the colors by properties such as hue and chroma. I have gone up to 300 colors with 'hard' mode and it was pretty quick. Note that some settings will throw a silent error, so check the console if you think it didn't work.
+
+What I have done so far to generate gradient arrays is more manual but works very well. Find/generate a gradient image online, download/screenshot it, then modify and scale its dimensions to have a `width` equal to the number of characters you are using for this module and a `height` of 1.
+```go
+package main
+
+import (
+	"bytes"
+	"flag"
+	"fmt"
+	"image/png"
+	"log"
+	"os"
+	"github.com/go-playground/colors"
+)
+
+func main() {
+	flag.Parse()
+	imgfile := flag.Arg(0)
+	if imgfile == "" {
+		log.Fatal("no img file given")
+	}
+	data, err := os.ReadFile(imgfile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	img, err := png.Decode(bytes.NewReader(data))
+	if err != nil {
+		log.Fatal(err)
+	}
+	bnds := img.Bounds()
+	for x := bnds.Min.X; x < bnds.Max.X; x++ {
+		fmt.Println("\"%{F" + colors.FromStdColor(img.At(x, 0)).ToHEX().String() + "}\"")
+	}
+}
+```
+This will print a polybar-formatted list of hex colors that you can paste directly into an array in your script. 
