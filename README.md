@@ -184,40 +184,17 @@ To animate the bar we can use a continuous color array where the final color is 
 <p>&nbsp;</p>
 
 ## Creating arrays of colors
-There are a lot of color/gradient/CSS tools available but they aren't geared towards generating lists of 100+ colors, so you would probably have to modify the code in order to use their color interpolation algorithms for this purpose. [This tool](https://medialab.github.io/iwanthue/) is the only one I have found that is ready to use. It generates long lists of hex colors and you can sort the colors by properties such as hue and chroma. I have gone up to 300 colors with 'hard' mode and it was pretty quick. Note that some settings will throw a silent error, so check the console if you think it didn't work.
+There are a lot of color/gradient/CSS tools available but they don't generate lists of 100+ colors, so you would probably have to modify their code in order to use their color interpolation algorithms for this purpose. [This tool](https://medialab.github.io/iwanthue/) is the only one I have found that is ready to use. It generates long lists of hex colors and you can sort the colors by properties such as hue and chroma. I have gone up to 300 colors with 'hard' mode and it was pretty quick. Note that some settings will throw a silent error, so check the console if you think it didn't work.
 
-What I have done so far to generate gradient arrays is more manual but works very well. Find/generate a gradient image online, download/screenshot it, then modify and scale its dimensions to have a `width` equal to the number of characters you are using for this module and a `height` of 1.
-```go
-package main
+What I have done so far to generate gradient arrays is more manual but works very well:
+1. Find or generate a gradient image online
+2. Download or screenshot it
+3. Cut, modify, and/or scale its dimensions to have a `width` equal to the number of characters you are using for this module
+4. Run the `getColors` program on the image to get the colors printed out in a ready-to-copy format. Run `getColors -h` for usage. The source code is in the [gradient folder](/gradient/).
 
-import (
-	"bytes"
-	"flag"
-	"fmt"
-	"image/png"
-	"log"
-	"os"
-	"github.com/go-playground/colors"
-)
+`magick -size 135x1 -define gradient:angle=90 gradient:#f1bb12-#1234be image.png`
 
-func main() {
-	flag.Parse()
-	imgfile := flag.Arg(0)
-	if imgfile == "" {
-		log.Fatal("no img file given")
-	}
-	data, err := os.ReadFile(imgfile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	img, err := png.Decode(bytes.NewReader(data))
-	if err != nil {
-		log.Fatal(err)
-	}
-	bnds := img.Bounds()
-	for x := bnds.Min.X; x < bnds.Max.X; x++ {
-		fmt.Println("\"%{F" + colors.FromStdColor(img.At(x, 0)).ToHEX().String() + "}\"")
-	}
-}
-```
-This will print a polybar-formatted list of hex colors that you can paste directly into an array in your script. 
+
+`mogrify -crop 200x20+300+748 ./image.jpg`
+
+`magick lge.png -resize 135x output.png`

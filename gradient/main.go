@@ -15,11 +15,10 @@ import (
 
 func main() {
 	flag.Usage = func() {
-		w := flag.CommandLine.Output()
-		fmt.Fprintf(w, "Usage of %s:\n\nCall with 0 - 3 of the following flags, then the filename (png or jpg). If quotes are needed, escape them:\n\n", os.Args[0])
+		o := flag.CommandLine.Output()
+		fmt.Fprintf(o, "Usage of %s:\n\nCall with 0 - 3 of the following flags, then the filename (png or jpg). If quotes are needed, escape them:\n\n", os.Args[0])
 		flag.PrintDefaults()
-		fmt.Fprintf(w, "Examples:\n\n")
-		fmt.Fprintf(w, "\t./getColors image.png\n\t\t#ff1212\n\t\t...\n\n\t./getColors -prefix %%{F -suffix } image.jpg\n\t\t%%{F#ff1200}\n\t\t...\n\n\t./getColors -prefix \\\"%%{F -suffix }\\\" image.png\n\t\t\"%%{F#bc124a}\"\n\t\t...\n\n")
+		fmt.Fprintf(o, "Examples:\n\n\t./getColors image.png\n\t\t#ff1212\n\t\t...\n\n\t./getColors -prefix %%{F -suffix } image.jpg\n\t\t%%{F#ff1200}\n\t\t...\n\n\t./getColors -prefix \\\"%%{F -suffix }\\\" image.png\n\t\t\"%%{F#bc124a}\"\n\t\t...\n\n")
 	}
 	prefix := flag.String("prefix", "", "prefix before #hex color; default is empty string")
 	row := flag.Int("row", 0, "row of your image to scan; default is 0")
