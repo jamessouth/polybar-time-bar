@@ -187,14 +187,12 @@ To animate the bar we can use a continuous color array where the final color is 
 There are a lot of color/gradient/CSS tools available but they don't generate lists of 100+ colors, so you would probably have to modify their code in order to use their color interpolation algorithms for this purpose. [This tool](https://medialab.github.io/iwanthue/) is the only one I have found that is ready to use. It generates long lists of hex colors and you can sort the colors by properties such as hue and chroma. I have gone up to 300 colors with 'hard' mode and it was pretty quick. Note that some settings will throw a silent error, so check the console if you think it didn't work.
 
 What I have done so far to generate gradient arrays is more manual but works very well:
-1. Find or generate a gradient image online
-2. Download or screenshot it
-3. Cut, modify, and/or scale its dimensions to have a `width` equal to the number of characters you are using for this module
+1. Find or generate a gradient image online.
+2. Download or screenshot it.
+3. Cut, modify, and/or scale its dimensions to have a `width` equal to the number of characters you are using for this module.
 4. Run the `getColors` program on the image to get the colors printed out in a ready-to-copy format. Run `getColors -h` for usage. The source code is in the [gradient folder](/gradient/).
 
-`magick -size 135x1 -define gradient:angle=90 gradient:#f1bb12-#1234be image.png`
-
-
-`mogrify -crop 200x20+300+748 ./image.jpg`
-
-`magick lge.png -resize 135x output.png`
+The following [ImageMagick](https://imagemagick.org/index.php) commands may be helpful:
+* `magick -size 135x1 -define gradient:angle=90 gradient:#f1bb12-#1234be image.png` will generate a two-color, 135x1 gradient image ready to provide to `getColors`.
+* `magick image.png -resize 135x output.png` will scale an image, preserving its aspect ratio. I used this command on a 235px gradient I created with the above command to reduce it to my time bar size (135 characters) and it generated almost the exact result I got by using [GIMP](https://www.gimp.org/) to scale.
+* `mogrify -crop 200x20+300+748 ./image.jpg` crops an image in place. This example moves right 300px, down 748px from the upper left corner, then cuts a 200x20 strip and overwrites the original.
