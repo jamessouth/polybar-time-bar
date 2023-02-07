@@ -89,7 +89,7 @@ printf '%s%b%*s' "$WHOLE" "$PORTION" $SPACES ''
 
 This one adds a polybar [format tag](https://github.com/polybar/polybar/wiki/Formatting#foreground-color-f) before each block. The `printf` command takes the loop variable (`$i`) multiplied by an arbitrary value (`49`) and injects it as a hex value to create a color in the format tag, stored in the variable `C`. `C` is then concatenated to `WHOLE` before the block, setting its color. The format tag `%%{F#a4%04x}` works like this:
 | | |
-|:-:|:-:|
+|:-|:-|
 |%%|a literal %|
 |{F#|open brace, F for foreground, # for hex color|
 |a4|arbitrary red value|
@@ -193,6 +193,9 @@ What I have done so far to generate gradient arrays is more manual but works ver
 4. Run the `getColors` program on the image to get the colors printed out in a ready-to-copy format. Run `getColors -h` for usage. The source code is in the [gradient folder](/gradient/).
 
 The following [ImageMagick](https://imagemagick.org/index.php) commands may be helpful:
-* `magick -size 135x1 -define gradient:angle=90 gradient:#f1bb12-#1234be image.png` will generate a two-color, 135x1 gradient image ready to provide to `getColors`.
-* `magick image.png -resize 135x output.png` will scale an image, preserving its aspect ratio. I used this command on a 235px gradient I created with the above command to reduce it to my time bar size (135 characters) and it generated almost the exact result I got by using [GIMP](https://www.gimp.org/) to scale.
-* `mogrify -crop 200x20+300+748 ./image.jpg` crops an image in place. This example moves right 300px, down 748px from the upper left corner, then cuts a 200x20 strip and overwrites the original.
+* `magick -size 135x1 -define gradient:angle=90 gradient:#f1bb12-#1234be image.png` will generate a two-color, 135x1 gradient image.
+
+* `magick image.png -resize 135x output.png` will scale an image horizontally, preserving its aspect ratio, to be 135px wide.
+
+* `mogrify -crop 200x20+300+748 ./image.jpg` will move right 300px, down 748px from the upper left corner, then crop out a 200x20 strip and overwrite the original with it.
+
