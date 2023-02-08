@@ -199,3 +199,5 @@ The following [ImageMagick](https://imagemagick.org/index.php) commands may be h
 
 * `mogrify -crop 200x20+300+748 ./image.jpg` will move right 300px, down 748px from the upper left corner, then crop out a 200x20 strip and overwrite the original with it.
 
+## Note on 'drift'
+Like all polybar modules, this one updates on the interval you set, not at any particular time. This may be noticeable at midnight when the time resets but the bar hasn't yet. This can last up to the length of the interval you set, so longer bars/shorter update intervals will have less 'drift'. 
