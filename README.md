@@ -103,6 +103,46 @@ The width of the zero-padded hex value must be enough to accomodate whatever num
 You can use the multiple-state functionality [shown here](https://github.com/polybar/polybar/wiki/Module:-script#examples) to send a signal to the script and change the display. You can also just create a separate transparent bar with such functionality and place it over a bar displaying this module.
 
 <img alt="time with gradient background" src="over.jpg">
+
+It is also possible to integrate the time with this module.
+```bash
+#!/usr/bin/env bash
+
+declare -a GR=(
+"#268bd2"
+"#278ad2"
+...132 omitted...
+"#d33682"
+)
+
+printf -v DT '%(%H%M%S)T'
+LEN=${#DT}
+FIRSTSPACE=$(($2-($2-$1)))
+WHOLE+=%{F#00000000}
+BEG=$((($2/2) - ($LEN/2)))
+BGCOL=#002b36
+FGCOL=#fdf6e3
+for ((i=0; i<$2; i++)); do
+  if [[ $i -ge $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
+    then WHOLE+=%{B$BGCOL}%{F$FGCOL}${DT:$(($i-$BEG)):1}
+  elif [[ $i -ge $FIRSTSPACE ]];
+    then WHOLE+=%{B$BGCOL} 
+  elif [[ $i -lt $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
+    then WHOLE+=%{B${GR[$i]}}%{F$BGCOL}${DT:$(($i-$BEG)):1}
+  else WHOLE+=%{B${GR[$i]}} ;
+  fi
+done
+WHOLE+=%{B-}
+
+printf '%s' "$WHOLE"
+
+```
+<img alt="time integrated with bar" src="integ.gif"> *Note that the bar here is deliberately shortened to show handling of characters that the bar has yet to reach.*
+
+
+
+
+
 <p>&nbsp;</p>
 
 ### Custom gradient
@@ -200,4 +240,4 @@ The following [ImageMagick](https://imagemagick.org/index.php) commands may be h
 * `mogrify -crop 200x20+300+748 ./image.jpg` will move right 300px, down 748px from the upper left corner, then crop out a 200x20 strip and overwrite the original with it.
 
 ## Note on 'drift'
-Like all polybar modules, this one updates on the interval you set, not at any particular time. This may be noticeable at midnight when the time resets but the bar hasn't yet. This can last up to the length of the interval you set, so longer bars/shorter update intervals will have less 'drift'. 
+Like all polybar modules, this one updates on the interval you set, not at any particular time. This may be noticeable at midnight when the time resets but the bar doesn't. This can last up to the length of the interval you set, so longer bars/shorter update intervals will have less 'drift'. 
