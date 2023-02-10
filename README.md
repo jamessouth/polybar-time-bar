@@ -99,51 +99,6 @@ This one adds a polybar [format tag](https://github.com/polybar/polybar/wiki/For
 The width of the zero-padded hex value must be enough to accomodate whatever number you want to put there to create a color algorithmically.
 <p>&nbsp;</p>
 
-### Display date/time with this module
-You can use the multiple-state functionality [shown here](https://github.com/polybar/polybar/wiki/Module:-script#examples) to send a signal to the script and change the display. You can also just create a separate transparent bar with such functionality and place it over a bar displaying this module.
-
-<img alt="time with gradient background" src="over.jpg">
-
-It is also possible to integrate the time with this module.
-```bash
-#!/usr/bin/env bash
-
-declare -a GR=(
-"#268bd2"
-"#278ad2"
-...132 omitted...
-"#d33682"
-)
-
-printf -v DT '%(%H%M%S)T'
-LEN=${#DT}
-FIRSTSPACE=$(($2-($2-$1)))
-WHOLE+=%{F#00000000}
-BEG=$((($2/2) - ($LEN/2)))
-BGCOL=#002b36
-FGCOL=#fdf6e3
-for ((i=0; i<$2; i++)); do
-  if [[ $i -ge $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
-    then WHOLE+=%{B$BGCOL}%{F$FGCOL}${DT:$(($i-$BEG)):1}
-  elif [[ $i -ge $FIRSTSPACE ]];
-    then WHOLE+=%{B$BGCOL} 
-  elif [[ $i -lt $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
-    then WHOLE+=%{B${GR[$i]}}%{F$BGCOL}${DT:$(($i-$BEG)):1}
-  else WHOLE+=%{B${GR[$i]}} ;
-  fi
-done
-WHOLE+=%{B-}
-
-printf '%s' "$WHOLE"
-
-```
-<img alt="time integrated with bar" src="integ.gif"> *Note that the bar here is deliberately shortened to show handling of characters that the bar has yet to reach.*
-
-
-
-
-
-<p>&nbsp;</p>
 
 ### Custom gradient
 ```bash
@@ -196,6 +151,52 @@ To mimic powerline I made a few changes to this example. The partial block chara
 exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=120;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/timebarscript.sh ${flds[0]} ${flds[2]}
 ```
 Note the length of 120 (multiple of 24) and the omission of `flds[1]` (the partial block) from the arguments list the script is called with. In the script, we group by 5 (120 / 24) so that for each hour/color, four full blocks and one powerline symbol are printed. By omitting partial blocks and only printing 5 characters per hour, an interval of 720 seconds (12 minutes) can be used.
+<p>&nbsp;</p>
+
+### Display date/time with this module
+You can incorporate a time display into this module:
+* Use the multiple-state functionality [shown here](https://github.com/polybar/polybar/wiki/Module:-script#examples) to send a signal to the script and change the display via mouse click
+
+* Create a separate, transparent-background polybar and superimpose it on the bar displaying this module &#8594; <img alt="time with gradient background" src="over.jpg">
+
+* Add the time to the output of this module &#8628;
+```bash
+#!/usr/bin/env bash
+
+declare -a GR=(
+"#268bd2"
+"#278ad2"
+...132 omitted...
+"#d33682"
+)
+
+printf -v DT '%(%F)T %(%T)T'
+LEN=${#DT}
+FIRSTSPACE=$(($2-($2-$1)))
+WHOLE+=%{F#00000000}
+BEG=$((($2/2) - ($LEN/2)))
+BGCOL=#002b36
+FGCOL=#fdf6e3
+for ((i=0; i<$2; i++)); do
+  if [[ $i -ge $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
+    then WHOLE+=%{B$BGCOL}%{F$FGCOL}${DT:$(($i-$BEG)):1}
+  elif [[ $i -ge $FIRSTSPACE ]];
+    then WHOLE+=%{B$BGCOL} ;#note the non-breaking space
+  elif [[ $i -lt $FIRSTSPACE && $i -ge $BEG && $i -lt $(($BEG + $LEN)) ]];
+    then WHOLE+=%{B${GR[$i]}}%{F$BGCOL}${DT:$(($i-$BEG)):1}
+  else WHOLE+=%{B${GR[$i]}} ;#note the non-breaking space
+  fi
+done
+WHOLE+=%{B-}
+
+printf '%s' "$WHOLE"
+
+```
+<img alt="time integrated with bar" src="integ.jpg"> *Bar deliberately shortened to show characters in space area*
+
+Like the powerline script above, this script omits the partial block characters and is therefore called with the same adjusted command with two arguments. We will also be setting background and foreground colors, so we use an array of unformatted hex colors.
+
+We get the time in whichever [strftime](https://man7.org/linux/man-pages/man3/strftime.3.html) format you want, take its length, and determine the first index of our bar that will be a space. We then make the foreground color transparent and get the first index of our time display, based on centering it. We loop up to the length of our bar and for each index determine if it is part of the bar or the space, then if it should display part of the time or not. Finally, we clear the background color and print the result.
 <p>&nbsp;</p>
 
 ### Rotate colors
