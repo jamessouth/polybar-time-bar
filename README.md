@@ -33,8 +33,13 @@ Just copy and paste the examples below into a file like your other polybar scrip
 ## Usage
 In your module file:
 ```
+[module/timebar]
 type = custom/script
-exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=135;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/timebarscript.sh ${flds[0]} ${flds[1]} ${flds[2]}
+
+exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=135;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/[name of script].sh ${flds[0]} ${flds[1]} ${flds[2]}
+
+;exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=120;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/[name of script].sh ${flds[0]} ${flds[2]}
+
 interval = 80
 format = <label>
 ;format-foreground = ${colors.red}
