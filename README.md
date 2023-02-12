@@ -30,21 +30,8 @@ This repo is a progress bar module that shows how much of the day (or other time
 ## Installation
 Just copy and paste the examples below into a file like your other polybar scripts. Make it executable with `chmod +x filename.sh`. 
 
-## Usage
-In your module file:
-```
-[module/timebar]
-type = custom/script
 
-exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=135;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/[name of script].sh ${flds[0]} ${flds[1]} ${flds[2]}
 
-;exec = IFS=\\. read -a flds <<< $(awk 'BEGIN{split(strftime("%T"),a,":");len=120;f=(a[1]/24+a[2]/1440+a[3]/86400)*len;printf "%.6f.%d", f, len}'); bash ~/.config/polybar/[name of script].sh ${flds[0]} ${flds[2]}
-
-interval = 80
-format = <label>
-;format-foreground = ${colors.red}
-label = %{T1}%output%
-```
 The `exec` command uses `awk` and `read` to calculate the number of whole blocks (`█`) needed and what fraction of the next one to show. The script is then called with these values and the length in characters you use to display this module. Note that you set this (len) in the `awk` command. In this example I am using 135 characters, which at font size 13, covers nearly the whole width of my display and allows for an integer interval (80). The more characters you use, the more often it will update. Since the overhead is so low, I use a second polybar just for this. 
 
 To determine the optimal interval divide 86400 (number of seconds in a day) by the product of 8 and how many characters you use to display the time bar - `86400/(module length in characters*8)`. The following table lists lengths in characters that have integer interval times. Past 100, just flip the numbers around; e.g., a length of 150 would update every 72 seconds.
