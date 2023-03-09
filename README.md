@@ -22,15 +22,23 @@ A time module for your
 <p>&nbsp;</p>
 
 ## Description
-This repo is a progress bar module that shows how much of the day (or other time period) has passed. It uses the [Unicode code points 2588-F](https://www.unicode.org/charts/PDF/U2580.pdf) (1/8 block to full block) but you can use anything, including [Powerline characters](https://github.com/ryanoasis/powerline-extra-symbols#glyphs). The Stack Overflow answer [here](https://stackoverflow.com/a/68298090) was helpful in developing this module.
+This repo is a progress bar module that shows how much of the day (or other time period) has passed. It has 8 example scripts that use the [Unicode code points 2588-F](https://www.unicode.org/charts/PDF/U2580.pdf) (1/8 block to full block), but you can use anything, including [Powerline characters](https://github.com/ryanoasis/powerline-extra-symbols#glyphs). The Stack Overflow answer [here](https://stackoverflow.com/a/68298090) was helpful in developing this module.
 <p>&nbsp;</p>
 
 ## Installation
 Install all of the scripts:
 ```bash
-curl -JOL https://github.com/jamessouth/polybar-time-bar/blob/master/timebar.zip?raw=true && mkdir -pv ~/.config/polybar/timebar && unzip timebar.zip -d ~/.config/polybar/timebar && chmod -R +x ~/.config/polybar/timebar && rm timebar.zip
+direc="$HOME/.config/polybar/timebar" && curl -JOL https://github.com/jamessouth/polybar-time-bar/blob/master/timebar.zip?raw=true && mkdir -pv $direc && unzip timebar.zip -d $direc && chmod -R +x $direc && rm timebar.zip
 ```
-This will download the zip file, create the `timebar` directory in `.config/polybar`, unzip the archive into the `timebar` directory, make each script executable, and delete the zip file. Note that no-break spaces need to be added to the Scroll and Time scripts as described therein.
+This will:
+* set the `direc` variable to `.config/polybar/timebar`
+* `curl` the zip file to your computer
+* `mkdir` the directory stored in `$direc`
+* `unzip` the archive into the directory
+* `chmod +x` the scripts in the directory
+* `rm` the zip file
+
+Note that no-break spaces may need to be added to the Scroll and Time scripts as explained therein.
 <p>&nbsp;</p>
 
 ## Usage
