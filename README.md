@@ -44,3 +44,9 @@ Note that no-break spaces may need to be added to the Scroll and Time scripts as
 ## Usage
 Please see the wiki.
 <p>&nbsp;</p>
+
+## My other polybar modules
+Please check out:
+  * [polybar-binary-clock-fonts](https://github.com/jamessouth/polybar-binary-clock-fonts)
+  * [polybar-nightlight](https://github.com/jamessouth/polybar-nightlight)
+<p>&nbsp;</p>
