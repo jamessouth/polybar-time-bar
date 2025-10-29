@@ -1,0 +1,13 @@
+#!/bin/sh
+
+MAINLEN=135
+PWRLEN=120
+PWRCHAR=
+MONOCOLOR="%{F#a3fc72}"
+CDCOLOR="%{F#57a8f3}"
+
+
+
+
+
+

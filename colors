@@ -1,0 +1,503 @@
+#!/bin/sh
+
+# 135 rainbow colors
+#{{{
+rainbow() {
+  case "$1" in
+    0) printf "%%{%s#ff0000}" "$2" ;;
+    1) printf "%%{%s#ff0200}" "$2" ;;
+    2) printf "%%{%s#ff0600}" "$2" ;;
+    3) printf "%%{%s#ff0c00}" "$2" ;;
+    4) printf "%%{%s#ff1200}" "$2" ;;
+    5) printf "%%{%s#ff1900}" "$2" ;;
+    6) printf "%%{%s#ff1f00}" "$2" ;;
+    7) printf "%%{%s#ff2500}" "$2" ;;
+    8) printf "%%{%s#ff2c00}" "$2" ;;
+    9) printf "%%{%s#ff3200}" "$2" ;;
+    10) printf "%%{%s#ff3800}" "$2" ;;
+    11) printf "%%{%s#ff3f00}" "$2" ;;
+    12) printf "%%{%s#ff4500}" "$2" ;;
+    13) printf "%%{%s#ff4b00}" "$2" ;;
+    14) printf "%%{%s#ff5100}" "$2" ;;
+    15) printf "%%{%s#ff5700}" "$2" ;;
+    16) printf "%%{%s#ff5d00}" "$2" ;;
+    17) printf "%%{%s#ff6300}" "$2" ;;
+    18) printf "%%{%s#ff6900}" "$2" ;;
+    19) printf "%%{%s#ff6e00}" "$2" ;;
+    20) printf "%%{%s#ff7500}" "$2" ;;
+    21) printf "%%{%s#ff7b00}" "$2" ;;
+    22) printf "%%{%s#ff8000}" "$2" ;;
+    23) printf "%%{%s#ff8600}" "$2" ;;
+    24) printf "%%{%s#ff8c00}" "$2" ;;
+    25) printf "%%{%s#ff9100}" "$2" ;;
+    26) printf "%%{%s#ff9700}" "$2" ;;
+    27) printf "%%{%s#ff9c00}" "$2" ;;
+    28) printf "%%{%s#ffa200}" "$2" ;;
+    29) printf "%%{%s#ffa900}" "$2" ;;
+    30) printf "%%{%s#ffaf00}" "$2" ;;
+    31) printf "%%{%s#ffb400}" "$2" ;;
+    32) printf "%%{%s#ffb900}" "$2" ;;
+    33) printf "%%{%s#ffbe00}" "$2" ;;
+    34) printf "%%{%s#ffc400}" "$2" ;;
+    35) printf "%%{%s#ffca00}" "$2" ;;
+    36) printf "%%{%s#ffd000}" "$2" ;;
+    37) printf "%%{%s#ffd500}" "$2" ;;
+    38) printf "%%{%s#ffdb00}" "$2" ;;
+    39) printf "%%{%s#ffe000}" "$2" ;;
+    40) printf "%%{%s#ffe600}" "$2" ;;
+    41) printf "%%{%s#ffec00}" "$2" ;;
+    42) printf "%%{%s#fff100}" "$2" ;;
+    43) printf "%%{%s#fff600}" "$2" ;;
+    44) printf "%%{%s#fefc00}" "$2" ;;
+    45) printf "%%{%s#f8fe00}" "$2" ;;
+    46) printf "%%{%s#eeff00}" "$2" ;;
+    47) printf "%%{%s#e2ff00}" "$2" ;;
+    48) printf "%%{%s#d7ff00}" "$2" ;;
+    49) printf "%%{%s#ccff00}" "$2" ;;
+    50) printf "%%{%s#c1ff00}" "$2" ;;
+    51) printf "%%{%s#b6ff00}" "$2" ;;
+    52) printf "%%{%s#aaff00}" "$2" ;;
+    53) printf "%%{%s#9fff00}" "$2" ;;
+    54) printf "%%{%s#94ff00}" "$2" ;;
+    55) printf "%%{%s#88ff00}" "$2" ;;
+    56) printf "%%{%s#7dff00}" "$2" ;;
+    57) printf "%%{%s#71ff00}" "$2" ;;
+    58) printf "%%{%s#65ff00}" "$2" ;;
+    59) printf "%%{%s#5aff00}" "$2" ;;
+    60) printf "%%{%s#4eff00}" "$2" ;;
+    61) printf "%%{%s#42ff00}" "$2" ;;
+    62) printf "%%{%s#35ff00}" "$2" ;;
+    63) printf "%%{%s#28ff00}" "$2" ;;
+    64) printf "%%{%s#1cff00}" "$2" ;;
+    65) printf "%%{%s#0eff00}" "$2" ;;
+    66) printf "%%{%s#02ff00}" "$2" ;;
+    67) printf "%%{%s#00ff00}" "$2" ;;
+    68) printf "%%{%s#00ff04}" "$2" ;;
+    69) printf "%%{%s#00ff0f}" "$2" ;;
+    70) printf "%%{%s#00ff1d}" "$2" ;;
+    71) printf "%%{%s#00ff2a}" "$2" ;;
+    72) printf "%%{%s#00ff36}" "$2" ;;
+    73) printf "%%{%s#00ff42}" "$2" ;;
+    74) printf "%%{%s#00ff4e}" "$2" ;;
+    75) printf "%%{%s#00ff5b}" "$2" ;;
+    76) printf "%%{%s#00ff66}" "$2" ;;
+    77) printf "%%{%s#00ff72}" "$2" ;;
+    78) printf "%%{%s#00ff7e}" "$2" ;;
+    79) printf "%%{%s#00ff89}" "$2" ;;
+    80) printf "%%{%s#00ff95}" "$2" ;;
+    81) printf "%%{%s#00ffa0}" "$2" ;;
+    82) printf "%%{%s#00ffac}" "$2" ;;
+    83) printf "%%{%s#00ffb7}" "$2" ;;
+    84) printf "%%{%s#00ffc2}" "$2" ;;
+    85) printf "%%{%s#00ffcd}" "$2" ;;
+    86) printf "%%{%s#00ffd9}" "$2" ;;
+    87) printf "%%{%s#00ffe4}" "$2" ;;
+    88) printf "%%{%s#00ffef}" "$2" ;;
+    89) printf "%%{%s#00fef9}" "$2" ;;
+    90) printf "%%{%s#00f8fe}" "$2" ;;
+    91) printf "%%{%s#00edff}" "$2" ;;
+    92) printf "%%{%s#00e2ff}" "$2" ;;
+    93) printf "%%{%s#00d7ff}" "$2" ;;
+    94) printf "%%{%s#00ccff}" "$2" ;;
+    95) printf "%%{%s#00c0ff}" "$2" ;;
+    96) printf "%%{%s#00b6ff}" "$2" ;;
+    97) printf "%%{%s#00abff}" "$2" ;;
+    98) printf "%%{%s#009fff}" "$2" ;;
+    99) printf "%%{%s#0093ff}" "$2" ;;
+    100) printf "%%{%s#0087ff}" "$2" ;;
+    101) printf "%%{%s#007cff}" "$2" ;;
+    102) printf "%%{%s#0071ff}" "$2" ;;
+    103) printf "%%{%s#0065ff}" "$2" ;;
+    104) printf "%%{%s#0059ff}" "$2" ;;
+    105) printf "%%{%s#004eff}" "$2" ;;
+    106) printf "%%{%s#0041ff}" "$2" ;;
+    107) printf "%%{%s#0034ff}" "$2" ;;
+    108) printf "%%{%s#0028ff}" "$2" ;;
+    109) printf "%%{%s#001cff}" "$2" ;;
+    110) printf "%%{%s#000fff}" "$2" ;;
+    111) printf "%%{%s#0004ff}" "$2" ;;
+    112) printf "%%{%s#0000ff}" "$2" ;;
+    113) printf "%%{%s#0400ff}" "$2" ;;
+    114) printf "%%{%s#1000ff}" "$2" ;;
+    115) printf "%%{%s#1d00ff}" "$2" ;;
+    116) printf "%%{%s#2900ff}" "$2" ;;
+    117) printf "%%{%s#3600ff}" "$2" ;;
+    118) printf "%%{%s#4200ff}" "$2" ;;
+    119) printf "%%{%s#4e00ff}" "$2" ;;
+    120) printf "%%{%s#5a00ff}" "$2" ;;
+    121) printf "%%{%s#6600ff}" "$2" ;;
+    122) printf "%%{%s#7300ff}" "$2" ;;
+    123) printf "%%{%s#7e00ff}" "$2" ;;
+    124) printf "%%{%s#8800ff}" "$2" ;;
+    125) printf "%%{%s#9400ff}" "$2" ;;
+    126) printf "%%{%s#a000ff}" "$2" ;;
+    127) printf "%%{%s#ac00ff}" "$2" ;;
+    128) printf "%%{%s#b700ff}" "$2" ;;
+    129) printf "%%{%s#c200ff}" "$2" ;;
+    130) printf "%%{%s#cd00ff}" "$2" ;;
+    131) printf "%%{%s#d800ff}" "$2" ;;
+    132) printf "%%{%s#e300ff}" "$2" ;;
+    133) printf "%%{%s#ee00ff}" "$2" ;;
+    134) printf "%%{%s#f800ff}" "$2" ;;
+    *) printf "" ;;
+  esac
+}
+#}}}
+
+# 24 scrambled rainbow colors
+#{{{
+powerline() {
+    case "$1" in
+        0) printf "#63ff00" ;;  # Green
+        1) printf "#ff5000" ;;  # Orange-Red
+        2) printf "#0063ff" ;;  # Blue
+        3) printf "#fdef00" ;;  # Yellow
+        4) printf "#ff0e00" ;;  # Bright Red
+        5) printf "#00ffa4" ;;  # Cyan-Green
+        6) printf "#a400ff" ;;  # Purple
+        7) printf "#ffb100" ;;  # Gold
+        8) printf "#00ff26" ;;  # Bright Green
+        9) printf "#df00ff" ;;  # Magenta
+        10) printf "#ff2e00" ;;  # Red
+        11) printf "#00dffd" ;;  # Light Blue
+        12) printf "#ffd000" ;;  # Golden Yellow
+        13) printf "#2601ff" ;;  # Dark Purple
+        14) printf "#a3ff00" ;;  # Lime Green
+        15) printf "#0125ff" ;;  # Dark Blue
+        16) printf "#ff7100" ;;  # Orange
+        17) printf "#00fde0" ;;  # Teal
+        18) printf "#26ff01" ;;  # Another Green
+        19) printf "#6400ff" ;;  # Medium Purple
+        20) printf "#dffe00" ;;  # Yellow-Green
+        21) printf "#00a2ff" ;;  # Sky Blue
+        22) printf "#ff9100" ;;  # Amber
+        23) printf "#00ff64" ;;  # Pure Green
+        *) printf "" ;; # Default case for out-of-range
+    esac
+}
+#}}}
+
+# 24 rainbow colors
+#{{{
+#powerline() {
+#    case "$1" in
+#        0) printf "#ff0e00" ;; # Bright Red
+#        1) printf "#ff2e00" ;; # Red
+#        2) printf "#ff5000" ;; # Orange-Red
+#        3) printf "#ff7100" ;; # Orange
+#        4) printf "#ff9100" ;; # Amber
+#        5) printf "#ffb100" ;; # Gold
+#        6) printf "#ffd000" ;; # Golden Yellow
+#        7) printf "#fdef00" ;; # Yellow
+#        8) printf "#dffe00" ;; # Yellow-Green
+#        9) printf "#a3ff00" ;; # Lime Green
+#        10) printf "#63ff00" ;; # Green
+#        11) printf "#26ff01" ;; # Bright Green
+#        12) printf "#01ff26" ;; # Another Bright Green
+#        13) printf "#00ff64" ;; # Pure Green
+#        14) printf "#00ffa4" ;; # Cyan-Green
+#        15) printf "#00fde0" ;; # Teal
+#        16) printf "#00dffd" ;; # Light Blue
+#        17) printf "#00a2ff" ;; # Sky Blue
+#        18) printf "#0063ff" ;; # Blue
+#        19) printf "#0125ff" ;; # Dark Blue
+#        20) printf "#2601ff" ;; # Dark Purple
+#        21) printf "#6400ff" ;; # Medium Purple
+#        22) printf "#a400ff" ;; # Purple
+#        23) printf "#df00ff" ;; # Magenta
+#        *) printf "" ;; # Default case for out-of-range
+#    esac
+#}
+#}}}
+
+# 135 blue to purple colors
+#{{{
+timeclrs() {
+    case "$1" in
+        0) printf "#268bd2" ;;
+        1) printf "#278ad2" ;;
+        2) printf "#288ad1" ;;
+        3) printf "#2a89d1" ;;
+        4) printf "#2b88d0" ;;
+        5) printf "#2c88cf" ;;
+        6) printf "#2d87cf" ;;
+        7) printf "#2f87ce" ;;
+        8) printf "#3086ce" ;;
+        9) printf "#3185cd" ;;
+        10) printf "#3385cc" ;;
+        11) printf "#3484cc" ;;
+        12) printf "#3583cb" ;;
+        13) printf "#3683cb" ;;
+        14) printf "#3882ca" ;;
+        15) printf "#3981c9" ;;
+        16) printf "#3a81c9" ;;
+        17) printf "#3c80c8" ;;
+        18) printf "#3d80c8" ;;
+        19) printf "#3e7fc7" ;;
+        20) printf "#407ec6" ;;
+        21) printf "#417ec6" ;;
+        22) printf "#427dc5" ;;
+        23) printf "#437cc5" ;;
+        24) printf "#457cc4" ;;
+        25) printf "#467bc3" ;;
+        26) printf "#477ac3" ;;
+        27) printf "#497ac2" ;;
+        28) printf "#4a79c2" ;;
+        29) printf "#4b79c1" ;;
+        30) printf "#4d78c0" ;;
+        31) printf "#4e77c0" ;;
+        32) printf "#4f77bf" ;;
+        33) printf "#5076bf" ;;
+        34) printf "#5275be" ;;
+        35) printf "#5375bd" ;;
+        36) printf "#5474bd" ;;
+        37) printf "#5673bc" ;;
+        38) printf "#5773bc" ;;
+        39) printf "#5872bb" ;;
+        40) printf "#5972ba" ;;
+        41) printf "#5b71ba" ;;
+        42) printf "#5c70b9" ;;
+        43) printf "#5d70b9" ;;
+        44) printf "#5f6fb8" ;;
+        45) printf "#606eb7" ;;
+        46) printf "#616eb7" ;;
+        47) printf "#636db6" ;;
+        48) printf "#646cb6" ;;
+        49) printf "#656cb5" ;;
+        50) printf "#666bb4" ;;
+        51) printf "#686bb4" ;;
+        52) printf "#696ab3" ;;
+        53) printf "#6a69b3" ;;
+        54) printf "#6c69b2" ;;
+        55) printf "#6d68b1" ;;
+        56) printf "#6e67b1" ;;
+        57) printf "#7067b0" ;;
+        58) printf "#7166b0" ;;
+        59) printf "#7265af" ;;
+        60) printf "#7365ae" ;;
+        61) printf "#7564ae" ;;
+        62) printf "#7664ad" ;;
+        63) printf "#7763ad" ;;
+        64) printf "#7962ac" ;;
+        65) printf "#7a62ab" ;;
+        66) printf "#7b61ab" ;;
+        67) printf "#7c60aa" ;;
+        68) printf "#7e60aa" ;;
+        69) printf "#7f5fa9" ;;
+        70) printf "#805ea8" ;;
+        71) printf "#825ea8" ;;
+        72) printf "#835da7" ;;
+        73) printf "#845da7" ;;
+        74) printf "#865ca6" ;;
+        75) printf "#875ba5" ;;
+        76) printf "#885ba5" ;;
+        77) printf "#895aa4" ;;
+        78) printf "#8b59a4" ;;
+        79) printf "#8c59a3" ;;
+        80) printf "#8d58a2" ;;
+        81) printf "#8f57a2" ;;
+        82) printf "#9057a1" ;;
+        83) printf "#9156a1" ;;
+        84) printf "#9356a0" ;;
+        85) printf "#94559f" ;;
+        86) printf "#95549f" ;;
+        87) printf "#96549e" ;;
+        88) printf "#98539e" ;;
+        89) printf "#99529d" ;;
+        90) printf "#9a529c" ;;
+        91) printf "#9c519c" ;;
+        92) printf "#9d509b" ;;
+        93) printf "#9e509b" ;;
+        94) printf "#9f4f9a" ;;
+        95) printf "#a14f99" ;;
+        96) printf "#a24e99" ;;
+        97) printf "#a34d98" ;;
+        98) printf "#a54d98" ;;
+        99) printf "#a64c97" ;;
+        100) printf "#a74b96" ;;
+        101) printf "#a94b96" ;;
+        102) printf "#aa4a95" ;;
+        103) printf "#ab4995" ;;
+        104) printf "#ac4994" ;;
+        105) printf "#ae4893" ;;
+        106) printf "#af4893" ;;
+        107) printf "#b04792" ;;
+        108) printf "#b24692" ;;
+        109) printf "#b34691" ;;
+        110) printf "#b44590" ;;
+        111) printf "#b64490" ;;
+        112) printf "#b7448f" ;;
+        113) printf "#b8438f" ;;
+        114) printf "#b9428e" ;;
+        115) printf "#bb428d" ;;
+        116) printf "#bc418d" ;;
+        117) printf "#bd418c" ;;
+        118) printf "#bf408c" ;;
+        119) printf "#c03f8b" ;;
+        120) printf "#c13f8a" ;;
+        121) printf "#c23e8a" ;;
+        122) printf "#c43d89" ;;
+        123) printf "#c53d89" ;;
+        124) printf "#c63c88" ;;
+        125) printf "#c83b87" ;;
+        126) printf "#c93b87" ;;
+        127) printf "#ca3a86" ;;
+        128) printf "#cc3a86" ;;
+        129) printf "#cd3985" ;;
+        130) printf "#ce3884" ;;
+        131) printf "#cf3884" ;;
+        132) printf "#d13783" ;;
+        133) printf "#d23683" ;;
+        134) printf "#d33682" ;;
+        *) printf "" ;; # Default case for out-of-range
+    esac
+}
+#}}}
+
+# 135 rainbow colors in a loop
+#{{{
+rotateclrs() {
+    case "$1" in
+        0) printf "%%{F#00fff9}" ;;
+        1) printf "%%{F#00fff0}" ;;
+        2) printf "%%{F#00ffe6}" ;;
+        3) printf "%%{F#00ffdd}" ;;
+        4) printf "%%{F#00ffd4}" ;;
+        5) printf "%%{F#00ffca}" ;;
+        6) printf "%%{F#00ffc0}" ;;
+        7) printf "%%{F#00ffb7}" ;;
+        8) printf "%%{F#00ffae}" ;;
+        9) printf "%%{F#00ffa5}" ;;
+        10) printf "%%{F#00ff9b}" ;;
+        11) printf "%%{F#00ff91}" ;;
+        12) printf "%%{F#00ff88}" ;;
+        13) printf "%%{F#00ff7f}" ;;
+        14) printf "%%{F#00ff75}" ;;
+        15) printf "%%{F#00ff6b}" ;;
+        16) printf "%%{F#00ff62}" ;;
+        17) printf "%%{F#00ff59}" ;;
+        18) printf "%%{F#00ff50}" ;;
+        19) printf "%%{F#00ff46}" ;;
+        20) printf "%%{F#00ff3c}" ;;
+        21) printf "%%{F#00ff33}" ;;
+        22) printf "%%{F#00ff2a}" ;;
+        23) printf "%%{F#00ff20}" ;;
+        24) printf "%%{F#00ff16}" ;;
+        25) printf "%%{F#00ff0e}" ;;
+        26) printf "%%{F#00ff04}" ;;
+        27) printf "%%{F#08ff00}" ;;
+        28) printf "%%{F#15ff00}" ;;
+        29) printf "%%{F#21ff00}" ;;
+        30) printf "%%{F#2eff00}" ;;
+        31) printf "%%{F#3aff00}" ;;
+        32) printf "%%{F#47ff00}" ;;
+        33) printf "%%{F#54ff00}" ;;
+        34) printf "%%{F#60ff00}" ;;
+        35) printf "%%{F#6cff00}" ;;
+        36) printf "%%{F#79ff00}" ;;
+        37) printf "%%{F#86ff00}" ;;
+        38) printf "%%{F#92ff00}" ;;
+        39) printf "%%{F#9fff00}" ;;
+        40) printf "%%{F#abff00}" ;;
+        41) printf "%%{F#b8ff00}" ;;
+        42) printf "%%{F#c5ff00}" ;;
+        43) printf "%%{F#d1ff00}" ;;
+        44) printf "%%{F#ddff00}" ;;
+        45) printf "%%{F#eaff00}" ;;
+        46) printf "%%{F#f7ff00}" ;;
+        47) printf "%%{F#fffa00}" ;;
+        48) printf "%%{F#ffee00}" ;;
+        49) printf "%%{F#ffe200}" ;;
+        50) printf "%%{F#ffd500}" ;;
+        51) printf "%%{F#ffc800}" ;;
+        52) printf "%%{F#ffbb00}" ;;
+        53) printf "%%{F#ffaf00}" ;;
+        54) printf "%%{F#ffa200}" ;;
+        55) printf "%%{F#ff9500}" ;;
+        56) printf "%%{F#ff8900}" ;;
+        57) printf "%%{F#ff7c00}" ;;
+        58) printf "%%{F#ff7000}" ;;
+        59) printf "%%{F#ff6300}" ;;
+        60) printf "%%{F#ff5700}" ;;
+        61) printf "%%{F#ff4a00}" ;;
+        62) printf "%%{F#ff3e00}" ;;
+        63) printf "%%{F#ff3100}" ;;
+        64) printf "%%{F#ff2400}" ;;
+        65) printf "%%{F#ff1800}" ;;
+        66) printf "%%{F#ff0c00}" ;;
+        67) printf "%%{F#ff0102}" ;;
+        68) printf "%%{F#ff000b}" ;;
+        69) printf "%%{F#ff0014}" ;;
+        70) printf "%%{F#ff001e}" ;;
+        71) printf "%%{F#ff0027}" ;;
+        72) printf "%%{F#ff0031}" ;;
+        73) printf "%%{F#ff003a}" ;;
+        74) printf "%%{F#ff0043}" ;;
+        75) printf "%%{F#ff004d}" ;;
+        76) printf "%%{F#ff0056}" ;;
+        77) printf "%%{F#ff005f}" ;;
+        78) printf "%%{F#ff0069}" ;;
+        79) printf "%%{F#ff0073}" ;;
+        80) printf "%%{F#ff007c}" ;;
+        81) printf "%%{F#ff0085}" ;;
+        82) printf "%%{F#ff008f}" ;;
+        83) printf "%%{F#ff0098}" ;;
+        84) printf "%%{F#ff00a2}" ;;
+        85) printf "%%{F#ff00ab}" ;;
+        86) printf "%%{F#ff00b4}" ;;
+        87) printf "%%{F#ff00be}" ;;
+        88) printf "%%{F#ff00c8}" ;;
+        89) printf "%%{F#ff00d1}" ;;
+        90) printf "%%{F#ff00da}" ;;
+        91) printf "%%{F#ff00e4}" ;;
+        92) printf "%%{F#ff00ed}" ;;
+        93) printf "%%{F#ff00f7}" ;;
+        94) printf "%%{F#fd00fe}" ;;
+        95) printf "%%{F#f100ff}" ;;
+        96) printf "%%{F#e400ff}" ;;
+        97) printf "%%{F#d800ff}" ;;
+        98) printf "%%{F#cb00ff}" ;;
+        99) printf "%%{F#bf00ff}" ;;
+        100) printf "%%{F#b200ff}" ;;
+        101) printf "%%{F#a600ff}" ;;
+        102) printf "%%{F#9900ff}" ;;
+        103) printf "%%{F#8d00ff}" ;;
+        104) printf "%%{F#8000ff}" ;;
+        105) printf "%%{F#7300ff}" ;;
+        106) printf "%%{F#6600ff}" ;;
+        107) printf "%%{F#5a00ff}" ;;
+        108) printf "%%{F#4d00ff}" ;;
+        109) printf "%%{F#4100ff}" ;;
+        110) printf "%%{F#3400ff}" ;;
+        111) printf "%%{F#2800ff}" ;;
+        112) printf "%%{F#1b00ff}" ;;
+        113) printf "%%{F#0f00ff}" ;;
+        114) printf "%%{F#0201ff}" ;;
+        115) printf "%%{F#000bff}" ;;
+        116) printf "%%{F#0018ff}" ;;
+        117) printf "%%{F#0024ff}" ;;
+        118) printf "%%{F#0031ff}" ;;
+        119) printf "%%{F#003eff}" ;;
+        120) printf "%%{F#004aff}" ;;
+        121) printf "%%{F#0056ff}" ;;
+        122) printf "%%{F#0063ff}" ;;
+        123) printf "%%{F#0070ff}" ;;
+        124) printf "%%{F#007cff}" ;;
+        125) printf "%%{F#0089ff}" ;;
+        126) printf "%%{F#0095ff}" ;;
+        127) printf "%%{F#00a2ff}" ;;
+        128) printf "%%{F#00afff}" ;;
+        129) printf "%%{F#00bbff}" ;;
+        130) printf "%%{F#00c8ff}" ;;
+        131) printf "%%{F#00d4ff}" ;;
+        132) printf "%%{F#00e1ff}" ;;
+        133) printf "%%{F#00eeff}" ;;
+        134) printf "%%{F#00faff}" ;;
+        *) printf "" ;; # Default case for out-of-range
+    esac
+}
+#}}}
+
+
+
+

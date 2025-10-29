@@ -1,0 +1,136 @@
+#!/bin/sh
+
+
+get_time() {
+	awk 'BEGIN {ts = systime(); split(strftime("%T",ts), a, ":");f = (a[1]/24 + a[2]/1440 + a[3]/86400) * ARGV[1];printf "%.6f.%d", f, ts%ARGV[1]}' "$1"
+}
+
+
+changeCDBar() {
+	func_ind=$(( (func_ind + tot_funcs + $1) % tot_funcs ))
+	if [ "$sleep_pid" -ne 0 ]; then
+		kill "$sleep_pid" >/dev/null 2>&1
+	fi
+}
+
+
+changeCDHours() {
+	if [ "$func_ind" -eq 6 ] && [ "$cd_has_begun" -eq 0 ]; then
+		cd_hours=$(( cd_hours + $1 ))
+		if [ "$cd_hours" -lt 0 ]; then
+			cd_hours=99
+		fi
+		if [ "$cd_hours" -gt 99 ]; then
+			cd_hours=0
+		fi
+	fi
+}
+
+
+changeCDMins() {
+	if [ "$func_ind" -eq 6 ] && [ "$cd_has_begun" -eq 0 ]; then
+		cd_mins=$(( cd_mins + $1 ))
+		if [ "$cd_mins" -lt 0 ]; then
+			cd_mins=59
+		fi
+		if [ "$cd_mins" -gt 59 ]; then
+			cd_mins=0
+		fi
+	fi
+}
+
+
+changeCDSecs() {
+	if [ "$func_ind" -eq 6 ] && [ "$cd_has_begun" -eq 0 ]; then
+		cd_secs=$(( cd_secs + $1 ))
+		if [ "$cd_secs" -lt 0 ]; then
+			cd_secs=59
+		fi
+		if [ "$cd_secs" -gt 59 ]; then
+			cd_secs=0
+		fi
+	fi
+}
+
+changeCDWidth() {
+	if [ "$func_ind" -eq 6 ] && [ "$cd_has_begun" -eq 0 ]; then
+		cd_width=$(( cd_width + $1 ))
+		if [ "$cd_width" -lt 1 ]; then
+			cd_width=100
+		fi
+		if [ "$cd_width" -gt 100 ]; then
+			cd_width=1
+		fi
+	fi
+}
+
+#( (number + divisor - 1) / divisor )
+
+
+#printf "%b %b\n" "\u258$(( ($RANDOM % 8) + 1 ))" "\u258$(( ($RANDOM % 8) + 1 ))"
+
+
+startCD() {
+	foldcount=0
+	cngdir=0
+	dispwidth=$(echo "scale=2; val = ($cd_width / 100) * $MAINLEN; scale=0; val / 1" | bc) 
+	baseblks=$(printf "" | awk -v char="$b8" -v len="$dispwidth" 'BEGIN {for (i = 0; i < len; i++) {s = s char} printf "%s", s}')
+	hoursecs=$(( cd_hours * 3600 ))
+	minsecs=$(( cd_mins * 60 ))
+	totsecs=$(( hoursecs + minsecs + cd_secs ))
+	origtime="$totsecs"
+	wholes=$(( totsecs / 8 ))
+	parts=$(( (totsecs % 8) ? 1 : 0 ))
+	totblks=$(( wholes + parts ))
+	folds=$(( (( totblks - 1 ) / dispwidth) + 1 ))
+	blks=$(( wholes % dispwidth ))
+	spcs=$(( (dispwidth - ( totblks % dispwidth )) % dispwidth ))
+	if [ "$horiz" -eq 0 ]; then
+		if [ "$blks" -eq 0 ] && [ "$parts" -eq 0 ]; then
+			cdw="$baseblks"
+		elif [ "$blks" -eq 0 ] && [ "$parts" -eq 1 ]; then
+			cdw=""
+		else
+			cdw=$(printf "" | awk -v char="$b8" -v len="$blks" 'BEGIN {for (i = 0; i < len; i++) {s = s char} printf "%s", s}')
+		fi
+		SP=$(printf "" | awk -v char=" " -v len="$spcs" 'BEGIN {for (i = 0; i < len; i++) {s = s char} printf "%s", s}')
+	else
+		if [ "$blks" -eq 0 ] && [ "$parts" -eq 0 ]; then
+			cdw="$baseblks"
+		elif [ "$blks" -eq 0 ] && [ "$parts" -eq 1 ]; then
+			PB=$(( totsecs % 8 ))
+			if [ "$PB" -gt "$dispwidth" ]; then
+				whls=$(( PB / dispwidth ))
+				whlsp=$(( whls + 1 ))
+				pts=$(( PB % dispwidth ))
+				ptsw=$(( dispwidth - pts ))
+				blkvar="b$whls"
+				blkvarp="b$whlsp"
+				cdw=$(printf "" | awk -v char1="${!blkvar}" -v len1="$ptsw" -v char2="${!blkvarp}" -v len2="$pts" 'BEGIN {for (k = 0; k < len1; k++) {s1 = s1 char1} for (k = 0; k < len2; k++) {s2 = s2 char2} printf "%s%s", s1, s2}')
+			else
+				cdw=$(printf "" | awk -v char="$b1" -v len="$PB" 'BEGIN {for (i = 0; i < len; i++) {s = s char} printf "%s", s}')
+			fi
+		else
+			PB=$(( totsecs % 8 ))
+			prts=$(( ( blks * 8 ) + PB ))
+
+			whls=$(( prts / dispwidth ))
+			whlsp=$(( whls + 1 ))
+			pts=$(( prts % dispwidth ))
+			ptsw=$(( dispwidth - pts ))
+			blkvar="b$whls"
+			blkvarp="b$whlsp"
+			cdw=$(printf "" | awk -v char1="${!blkvar}" -v len1="$ptsw" -v char2="${!blkvarp}" -v len2="$pts" 'BEGIN {for (k = 0; k < len1; k++) {s1 = s1 char1} for (k = 0; k < len2; k++) {s2 = s2 char2} printf "%s%s", s1, s2}')
+		fi
+	fi
+
+
+	elapsed=$(( pts * -1 ))
+	ltr=$(( (folds % 2) ? 1 : -1 ))
+	cd_has_begun=1
+}
+
+	#if [ "$horiz" -eq 1 ] && [ "$PB" -gt 0 ]; then
+	#	cdw=$(printf '%b%s' "\u258$PB" "$cdw")
+	#fi
+
