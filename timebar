@@ -131,13 +131,13 @@ grad() {
 	WHOLE=""
 	i=0
 	while [ "$i" -lt "$W" ]; do
-		current_color=$(rainbow "$i")
+		current_color=$(rainbow "$i" "F")
 		WHOLE="${WHOLE}${current_color}█"
 
 		i=$(expr "$i" + 1)
 	done
 
-	current_color=$(rainbow "$i")
+	current_color=$(rainbow "$i" "F")
 	WHOLE="${WHOLE}${current_color}"
 
 	if [ "$SPACES" -lt 0 ]; then
@@ -356,13 +356,12 @@ countdown() {
 				#	1) printf '%s%s\n' "$(rainbow "$bg" "F")$(rainbow "$fg" "B")$cdw" "$SP" ;;
 				#esac
 
-# >> fred.txt
 
 				case $(( foldcount % 2 )) in
-					0) printf '%s%s %s %s %s %s %s %s\n' "%{F#ff0000}%{B#104980}$SP" "$cdw%{F- B-}" "$cngdir" "$whls" "$foldcount" "$elapsed" "$ltr" "$dispwidth" >> fred.txt
+					0) printf '%s%s %s %s %s %s %s %s\n' "%{F#ff0000}%{B#104980}$SP" "$cdw%{F- B-}" "$cngdir" "$whls" "$foldcount" "$elapsed" "$ltr" "$dispwidth" > ~/fred.txt
 
 ;;
-					1) printf '%s%s %s %s %s %s %s %s\n' "%{F#104980}%{B#ff0000}$cdw" "$SP%{F- B-}" "$cngdir" "$whls" "$foldcount" "$elapsed" "$ltr" "$dispwidth" >> fred.txt
+					1) printf '%s%s %s %s %s %s %s %s\n' "%{F#104980}%{B#ff0000}$cdw" "$SP%{F- B-}" "$cngdir" "$whls" "$foldcount" "$elapsed" "$ltr" "$dispwidth" > ~/fred.txt
 
 ;;
 
